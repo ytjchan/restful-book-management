@@ -10,22 +10,24 @@ dependencies {
 	compile "javax.ws.rs:jsr311-api:1.1.1"
 
 
-	compile 'com.sun.jersey:jersey-server:1.19.3'
-	compile 'com.sun.jersey:jersey-core:1.19.3'
-	compile 'com.sun.jersey:jersey-client:1.19.3'
-	compile 'com.sun.jersey:jersey-servlet:1.19.3'
-	compile 'com.sun.jersey:jersey-json:1.19.3'
+	compile 'com.sun.jersey:jersey-server:1.19.4'
+	compile 'com.sun.jersey:jersey-core:1.19.4'
+	compile 'com.sun.jersey:jersey-client:1.19.4'
+	compile 'com.sun.jersey:jersey-servlet:1.19.4'
+	compile 'com.sun.jersey:jersey-json:1.19.4'
 	
 	compile 'com.yammer.metrics:metrics-core:2.2.0'
 	compile 'com.yammer.metrics:metrics-servlet:2.2.0'
 	compile 'com.yammer.metrics:metrics-jersey:2.2.0'
 	compile 'com.yammer.metrics:metrics-graphite:2.2.0'
 	
-	compile 'log4j:log4j:1.2.16'
+	compile 'log4j:log4j:1.2.17'
 
-	testCompile "junit:junit-dep:4.10"
+	compile 'mysql:mysql-connector-java:5.1.45'
+
+	testCompile "junit:junit-dep:4.11"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.6'
 }
