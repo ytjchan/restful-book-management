@@ -4,9 +4,7 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 
-import jayray.net.orders.Address;
-import jayray.net.orders.Customer;
-import jayray.net.orders.CustomerResource;
+import jayray.net.mysql.*;
 
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
@@ -18,7 +16,7 @@ public class JAXBContextResolver implements ContextResolver<JAXBContext> {
 	private JAXBContext context;
 	// defining these explicitly is only required to state to use the configuration for natural json handling
 	// https://jersey.java.net/nonav/apidocs/1.5/jersey/com/sun/jersey/api/json/JSONConfiguration.Notation.html#NATURAL
-	private Class[] types = { Address.class, Customer.class, CustomerResource.class };
+	private Class[] types = {}; //Available.class, Book.class, BookQuery.class };
 
 	public JAXBContextResolver() throws Exception {
 		this.context = new JSONJAXBContext(JSONConfiguration.natural().build(), types);
