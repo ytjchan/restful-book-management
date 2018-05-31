@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<title>Book Management Service</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1 align="center">Loan/Return a Book</h1>
+		<hr>
+		
+		<form>
+			<table align="center">
+				<tr> <td><label for="id">ID: </label></td> <td><input id="id" type="number"></td> </tr>
+				<tr> 
+					<td colspan="2" align="center">
+						<input type="button" id="loan" value="Loan"> 
+						<input type="button" id="return" value="Return">
+					</td>
+				</tr>	
+			</table>
+		</form>
+		
+		<p id="results" align="center"></p>
+	</body>
+	<script>
+	
+		$("#results").html("");
+		
+		function loan_return(query) {
+			//alert("Hello World!");
+			var id = parseInt($("#id").val());
+			var url = "http://localhost:8080/BookManagementService/books/"+id;
+				
+			var obj;
+			switch (query) {
+				case ("loan"): 
+					obj = { "Available": false}; 
+					console.log(JSON.stringify(obj));
+					break;
+				case ("return"): 
+					obj = { "Available": true}; 
+					console.log(JSON.stringify(obj));
+					break;
+				default:
+					$("#results").html("Sorry, I don't understand");
+					return;
+			}
+			
+			$("#results").html("Running");
+			$.ajax({
+				url: url,
+				type: 'PUT',
+				data: JSON.stringify(obj),
+				contentType: 'application/json'
+			})
+				.done(function(data,textStatus,jqXHR) {
+					$("#results").html(((query=="loan")?"Loaning":"Returning")+" successful");
+				})
+				.fail(function(jqXHR,textStatus,errorThrown) {
+					$("#results").html(jqXHR.responseText);
+				});
+		}
+	
+		$(document).ready(function() {
+			$("#loan").click(function() {
+				console.log("Loan clicked");
+				loan_return("loan");
+			});
+			$("#return").click(function() {
+				console.log("Return clicked");
+				loan_return("return");
+			});
+		});
+		
+	</script>
+</html>

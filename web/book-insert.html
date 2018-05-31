@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<title>Book Management Service</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1 align="center">Add a New Book</h1>
+		<hr>
+		
+		<form>
+			<table align="center">
+				<tr> <td><label for="title">Title: </label></td> <td><input id="title" type="text"></td> </tr>
+				<tr> <td><label for="author">Author: </label></td> <td><input id="author" type="text"></td> </tr>
+				<tr> <td><label for="publisher">Publisher: </label></td> <td><input id="publisher" type="text"></td> </tr>
+				<tr> <td><label for="year">Year: </label></td> <td><input id="year" type="number"></td> </tr>
+				<tr> <td colspan="2" align="center"><input type="button" id="submit" value="Submit"></td> </tr>
+			</table>
+		</form>
+		
+		<p id="results" align="center"></p>
+	</body>
+	<script>
+	
+		$("#results").html("");
+	
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				//alert("Hello World!");
+				var title = ($("#title").val());
+				var author = ($("#author").val());
+				var publisher = ($("#publisher").val());
+				var year = parseInt($("#year").val());
+				
+				var url = "http://localhost:8080/BookManagementService/books/";
+				
+				//var json = "{\"Title\":\""+title+"\", \"Author\":\""+author+"\", \"Publisher\":\""+publisher+"\", \"Year\":"+year+"}";
+				//console.log(json);
+				var obj = {
+					"Title": title,
+					"Author": author,
+					"Publisher": publisher,
+					"Year": year
+				};
+				
+				$.ajaxSetup({
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+				
+				$("#results").html("Running");
+				$.post(url, JSON.stringify(obj), 
+					function(data, status, jqXHR) {
+						console.log(status);
+						$("#results").html("Created<br>" + data);
+					}, 
+					"text")
+					.done(function() {
+						console.log("created");
+					})
+					.fail(function(xhr, status, error) {
+						console.log("failed");
+						$("#results").html(xhr.responseText);
+					});
+			});
+		});
+		
+	</script>
+</html>

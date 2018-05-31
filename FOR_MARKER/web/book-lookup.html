@@ -1,0 +1,111 @@
+<html>
+	<head>
+		<title>Book Management Service</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1 align="center">Book Lookup</h1>
+		<hr>
+		
+		<form>
+			<table align="center">
+				<tr> <td><label for="id">ID: </label></td> <td><input id="id" type="number"></td> </tr>
+				<tr> <td><label for="title">Title: </label></td> <td><input id="title" type="text"></td> </tr>
+				<tr> <td><label for="author">Author: </label></td> <td><input id="author" type="text"></td> </tr>
+				<tr> <td><label for="publisher">Publisher: </label></td> <td><input id="publisher" type="text"></td> </tr>
+				<tr> <td colspan="2"><hr></td> </tr>
+				<tr> <td><label for="limit">Limit: </label></td> <td><input id="limit" type="number"></td> </tr>
+				<tr> <td><label for="sort-by">Sort by: </label></td> <td><select id="sort-by">
+					<option value="id">ID</option>
+					<option value="title">Title</option>
+					<option value="author">Author</option>
+					<option value="publisher">Publisher</option>
+					<option value="year">Year</option>
+					<option value="available">Availability</option>
+				</select></td> </tr>
+				<tr> <td colspan="2" align="center"><input type="radio" name="order" value="asc"> Ascending
+				<input type="radio" name="order" value="desc"> Descending</td> </tr>
+				<tr> <td colspan="2" align="center"><input type="button" id="submit" value="Submit"></td> </tr>
+			</table>
+		</form>
+		
+		<p id="results" align="center"></p>
+	</body>
+	<script>
+	
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				//alert("Hello World!");
+				var id = parseInt($("#id").val());
+				var title = ($("#title").val());
+				var author = ($("#author").val());
+				var publisher = ($("#publisher").val());
+				var limit = parseInt($("#limit").val());
+				var sortBy = ($("#sort-by").val());
+				var order = $("input[name=order]").val();
+				
+				var url = "http://localhost:8080/BookManagementService/books?";
+				if (Number.isInteger(id))
+					url += "id="+id+"&";
+				if (title)
+					url += "title="+title+"&";
+				if (author)
+					url += "author="+author+"&";
+				if (publisher)
+					url += "publisher="+publisher+"&";
+				if (Number.isInteger(limit))
+					url += "limit="+limit+"&";
+				if (sortBy)
+					url += "sortby="+sortBy+"&";
+				if (order)
+					url += "order="+order+"";
+				console.log("URL obtained: "+url);
+				
+				//window.location.href = url;
+				$.getJSON(url, {"dataType": "json"}, function(json) {
+				
+					function format_row(p0,p1,p2) {
+						var html = "<tr>";
+						if (p0!="") 
+							html += "<td>"+p0+"</td>";
+						else 
+							html += "<td></td>";
+						if (p1!="") 
+							html += "<td>"+p1+"</td>";
+						else 
+							html += "<td></td>";
+						if (p2!="") 
+							html += "<td>"+p2+"</td>";
+						else 
+							html += "<td></td>";
+						html += "</tr>";
+						return html;
+					}
+					$("#results").html("Running");
+					var html;
+					if (json==null) {
+						html = "No book records found";
+					} else {
+						html = json.FoundBooks + " books found:<br>";
+						html += "<table>";
+						html += format_row("<hr>","<hr>","<hr>");
+						var results = $(json.Results).toArray();
+						for (let book of results) {
+							console.log(book.id+book.Title);
+							html += format_row(book.id,"Title",book.Title);
+							html += format_row("","Author",book.Author);
+							html += format_row("","Publisher",book.Publisher);
+							html += format_row("","Year",book.Year);
+							html += format_row("","Available?",(book.available=="true")?"Yes":"No");
+							html += format_row("<hr>","<hr>","<hr>");
+						}
+						html += "</table>";
+					}
+					$("#results").html(html);
+				});
+			});
+		});
+		
+	</script>
+</html>

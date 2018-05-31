@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>Book Management Service</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1 align="center">Delete a Book</h1>
+		<hr>
+		
+		<form>
+			<table align="center">
+				<tr> <td><label for="id">ID: </label></td> <td><input id="id" type="number"></td> </tr>
+				<tr> <td colspan="2" align="center"><input type="button" id="submit" value="Submit"></td> </tr>
+			</table>
+		</form>
+		
+		<p id="results" align="center"></p>
+	</body>
+	<script>
+	
+		$("#results").html("");
+	
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				var id = parseInt($("#id").val());
+				var url = "http://localhost:8080/BookManagementService/books/"+id;
+				
+				$("#results").html("Running");
+				$.ajax({
+					url: url,
+					type: 'DELETE'
+				})
+					.done(function(data,textStatus,jqXHR) {
+						$("#results").html("Book "+id+" deleted");
+					})
+					.fail(function(jqXHR,textStatus,errorThrown) {
+						$("#results").html(jqXHR.responseText);
+					});
+			});
+		});
+		
+	</script>
+</html>

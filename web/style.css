@@ -1,0 +1,19 @@
+/* Taken from https://stackoverflow.com/questions/19254411/how-do-i-set-vertical-space-between-list-items */
+li {
+    margin: 10px 0;
+}
+
+/* Taken from https://stackoverflow.com/questions/6464592/how-to-align-entire-html-body-to-the-center */
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+}
